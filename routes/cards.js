@@ -12,7 +12,7 @@ const {
 
 cardRoutes.get('/cards', getCards);
 cardRoutes.post('/cards', createCard);
-cardRoutes.get('/cards/:cardId', deleteCard);
+cardRoutes.delete('/cards/:cardId', deleteCard);
 cardRoutes.put('/cards/:cardId/likes', likeCard);
 cardRoutes.delete('/cards/:cardId/likes', dislikeCard);
 
