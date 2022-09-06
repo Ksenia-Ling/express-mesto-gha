@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const { NOT_FOUND_ERROR } = require('./constants/errors');
 
 const { PORT = 3000 } = process.env;
 
@@ -18,6 +19,11 @@ app.use((req, res, next) => {
 
 app.use('/', require('./routes/cards'));
 app.use('/', require('./routes/users'));
+
+app.use('*', (req, res, next) => {
+  res.status(NOT_FOUND_ERROR).send({ message: 'Запрашиваемая страница не найдена' });
+  next();
+});
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
