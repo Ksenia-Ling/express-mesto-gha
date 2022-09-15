@@ -26,12 +26,17 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
+  const owner = req.user._id;
+
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
         res.status(NOT_FOUND_ERROR)
           .send({ message: 'Запрашиваемая карточка не найдена' });
         return;
+      }
+      if (card.owner.toString() !== owner) {
+        throw new Error('Удалять карточки может только их владелец');
       }
       res.send(card);
     })
