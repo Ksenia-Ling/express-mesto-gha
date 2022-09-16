@@ -74,7 +74,8 @@ module.exports.createUser = (req, res, next) => {
             throw new CONFLICT_ERROR('Пользователь с такими данными уже существует');
           }
           next(err);
-        });
+        })
+        .catch(next);
     });
 };
 
