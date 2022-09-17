@@ -19,7 +19,7 @@ userRoutes.get('/users/:userId', celebrate({
   }),
 }), getUserById);
 
-userRoutes.get('./users/me', getUserMe);
+userRoutes.get('/users/me', getUserMe);
 
 userRoutes.patch('/users/me', celebrate({
   body: Joi.object().keys({
