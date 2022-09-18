@@ -12,13 +12,6 @@ const {
 } = require('../controllers/users');
 
 userRoutes.get('/users', getUsers);
-
-userRoutes.get('/users/:userId', celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().required().hex().length(24),
-  }),
-}), getUserById);
-
 userRoutes.get('/users/me', getUserMe);
 
 userRoutes.patch('/users/me', celebrate({
@@ -33,5 +26,11 @@ userRoutes.patch('/users/me/avatar', celebrate({
     avatar: Joi.string().required().regex(/^(https?:\/\/)?([\da-z.-]+)([a-z.]{2,6})([/\w.-]*)*\/?$/),
   }),
 }), updateAvatar);
+
+userRoutes.get('/users/:userId', celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().required().hex().length(24),
+  }),
+}), getUserById);
 
 module.exports = userRoutes;
