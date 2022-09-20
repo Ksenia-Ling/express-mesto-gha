@@ -1,5 +1,6 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
+const regExForUrl = require('../utils/regex');
 
 const userRoutes = express.Router();
 
@@ -23,7 +24,7 @@ userRoutes.patch('/users/me', celebrate({
 
 userRoutes.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().regex(/^(https?:\/\/)?([\da-z.-]+)([a-z.]{2,6})([/\w.-]*)*\/?$/),
+    avatar: Joi.string().required().regex(regExForUrl),
   }),
 }), updateAvatar);
 

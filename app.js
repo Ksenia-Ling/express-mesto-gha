@@ -7,6 +7,7 @@ const NOT_FOUND_ERROR = require('./errors/notFoundError');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
+const regExForUrl = require('./utils/regex');
 
 const { PORT = 3000 } = process.env;
 
@@ -29,7 +30,7 @@ app.post('/signup', celebrate({
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(/^(https?:\/\/)?([\da-z.-]+)([a-z.]{2,6})([/\w.-]*)*\/?$/),
+    avatar: Joi.string().regex(regExForUrl),
   }),
 }), createUser);
 

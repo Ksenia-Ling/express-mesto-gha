@@ -25,7 +25,8 @@ module.exports.getUserById = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BAD_REQUEST_ERROR('Некорректный id пользователя');
+        next(new BAD_REQUEST_ERROR('Некорректный id пользователя'));
+        return;
       }
       next(err);
     });
@@ -41,7 +42,8 @@ module.exports.getUserMe = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BAD_REQUEST_ERROR('Некорректный id пользователя');
+        next(new BAD_REQUEST_ERROR('Некорректный id пользователя'));
+        return;
       }
       next(err);
     });
@@ -68,14 +70,15 @@ module.exports.createUser = (req, res, next) => {
         .then((user) => res.send({ data: user }))
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            throw new BAD_REQUEST_ERROR('Некорректные данные пользователя');
+            next(new BAD_REQUEST_ERROR('Некорректные данные пользователя'));
+            return;
           }
           if (err.name === 'MongoServerError') {
-            throw new CONFLICT_ERROR('Пользователь с такими данными уже существует');
+            next(new CONFLICT_ERROR('Пользователь с такими данными уже существует'));
+            return;
           }
           next(err);
-        })
-        .catch(next);
+        });
     });
 };
 
@@ -91,7 +94,8 @@ module.exports.updateProfile = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BAD_REQUEST_ERROR('Некорректные данные пользователя');
+        next(new BAD_REQUEST_ERROR('Некорректные данные пользователя'));
+        return;
       }
       next(err);
     });
@@ -109,7 +113,8 @@ module.exports.updateAvatar = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BAD_REQUEST_ERROR('Некорректная ссылка на аватар пользователя');
+        next(new BAD_REQUEST_ERROR('Некорректная ссылка на аватар пользователя'));
+        return;
       }
       next(err);
     });
@@ -117,10 +122,6 @@ module.exports.updateAvatar = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    throw new BAD_REQUEST_ERROR('Заполнены не все необходимые поля');
-  }
 
   User.findOne({ email })
     .select('+password')

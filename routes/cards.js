@@ -1,5 +1,6 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
+const regExForUrl = require('../utils/regex');
 
 const cardRoutes = express.Router();
 
@@ -15,7 +16,7 @@ cardRoutes.get('/cards', getCards);
 cardRoutes.post('/cards', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().regex(/^(https?:\/\/)?([\da-z.-]+)([a-z.]{2,6})([/\w.-]*)*\/?$/),
+    link: Joi.string().required().regex(regExForUrl),
   }),
 }), createCard);
 
