@@ -140,6 +140,8 @@ module.exports.login = (req, res, next) => {
               httpOnly: true,
             });
             res.send({ data: user.toJSON() });
+          } else {
+            throw new UNAUTHORIZED_ERROR('Неверный email или пароль');
           }
         });
     })
